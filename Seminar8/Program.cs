@@ -58,27 +58,78 @@ void Zadacha57()
 // элемент входных данных (словарь - одномерный массив)
 {
     Random random = new Random();
-    int rows = random.Next(4, 10);
-    int columns = random.Next(4, 10);
+    int rows = random.Next(4, 7);
+    int columns = random.Next(4, 7);
     int[,] array = new int[rows, columns];
-    FillArray(array, 0, 9);
+    int n = -10;                        // массив заполняется числами от -10 до 15
+    int k = 15;
+    int[] booking = new int[k-n + 1];
+    FillArray(array, n, k);
     Console.WriteLine("Заданный массив ");
-    PrintArray(array);
-    int[] booking = new int[10];
+    PrintArray(array);    
     Console.WriteLine();
-
     for (int i = 0; i < rows; i++) 
         {
             for (int j = 0; j < columns; j++)
             {
-                booking[array[i, j]] = booking[array[i, j]] + 1; // увеличение элемента массива boocing на единицу
+                booking[array[i, j] - n] = booking[array[i, j] - n] + 1; // увеличение элемента массива boocing на единицу
             }
         }
     for (int i = 0; i < booking.Length; i ++)
     {
-        if (booking[i] > 0) Console.WriteLine($"Число {i} встречается в данном массиве {booking[i]} раз (-а)");
+        if (booking[i] > 0) Console.WriteLine($"Число {i + n} встречается в данном массиве {booking[i]} раз (-а)");
     }
     Console.WriteLine();
+}
+
+void Zadacha59()
+// Задайтедвумерный массив из целых чисел. Напишите программу, которая
+// удалит строку и столбец, на пересечении которых расположен наименьший элемент массива
+{
+    Random random = new Random();
+    int rows = random.Next(4, 8);
+    int columns = random.Next(4, 8);
+    int[,] array = new int[rows, columns];
+    FillArray(array, 0, 30);
+    Console.WriteLine("Заданный массив ");
+    PrintArray(array);
+    int min = array[0, 0];
+    int min_i = 0;
+    int min_j = 0;
+    for (int i = 0; i < rows; i++) 
+        {
+            for (int j = i; j < columns; j++)
+            {
+                if (array[i, j] < min) 
+                {
+                    min = array[i, j]; 
+                    min_i = i;
+                    min_j = j;
+                }
+            }
+        }
+    Console.WriteLine($"Минимальный элемент a[{min_i}, {min_j}] равен {min} ");
+    Console.WriteLine();
+
+    int rowsResult = rows-1;
+    int columnsResult = columns-1;
+    int [,] result = new int[rowsResult, columnsResult];
+    int bias_i = 0; //смещение по i
+    int bias_j = 0; //смещение по j
+    for (int i = 0; i < rowsResult; i++) 
+        {
+            if (i == min_i) bias_i++;
+            bias_j = 0;
+            for (int j = 0; j < columnsResult; j++)
+            {
+                if (j == min_j) bias_j++;
+                {
+                    result[i, j] = array[i +  bias_i, j + bias_j];
+                }                     
+            }
+        }
+    Console.WriteLine("Полученный массив ");
+    PrintArray(result);
 }
 
 void FillArray(int[,] array, int startNumber, int finishNumder)
@@ -111,5 +162,6 @@ void PrintArray(int[,] array)
 
 //Zadacha53();
 //Zadacha55();
-Zadacha57();
+//Zadacha57();
+Zadacha59();
 
